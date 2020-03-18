@@ -2,24 +2,124 @@ openapi: '3.0'
 info:
   title: iReceptorPlus Statistics API
   version: 0.1.0
+  description: >
+    Statistics API for the iReceptor Plus platform.
   contact:
     name: iReceptor Plus
     url: 'https://www.ireceptor-plus.com'
     email: info@ireceptor-plus.com
-  description: >
-    Analysis API for the iReceptor Plus platform.
 
 servers:
   - url: https://vdjserver.org/irplus/v1/stats
-    description: Production server
+    description: VDJServer Production server
     variables:
       basePath:
         default: /irplus/v1/stats
   - url: https://vdj-staging.tacc.utexas.edu/irplus/v1/stats
-    description: Staging server
+    description: VDJServer Staging server
     variables:
       basePath:
         default: /irplus/v1/stats
+
+components:
+  schemas:
+    info_object:
+      type: object
+      description: Provides information about the service and API
+      properties:
+        title:
+          type: string
+        version:
+          type: string
+        description:
+          type: string
+        contact: 
+          type: object
+          properties:
+            name:
+              type: string
+            url:
+              type: string
+            email:
+              type: string
+        api:
+          type: object
+          properties:
+            title:
+              type: string
+            version:
+              type: string
+            description:
+              type: string
+            contact: 
+              type: object
+              properties:
+                name:
+                  type: string
+                url:
+                  type: string
+                email:
+                  type: string
+
+    count_object:
+      type: object
+      description: Key-value pair count representation with total count
+      properties:
+        total_count:
+          type: integer
+        counts:
+          type: object
+          additionalProperties:
+            type: integer
+
+    count_array:
+      type: array
+      description: Array-based count representation
+      items: 
+        type: object
+        properties:
+          key:
+            type: integer
+          count:
+            type: integer
+
+  responses:
+    error_response:
+      description: General error response.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Info:
+                $ref: '#/components/schemas/info_object'
+              Message:
+                type: string
+                description: Detail about the error
+
+    count_object_response:
+      description: Response providing a count object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Info:
+                $ref: '#/components/schemas/info_object'
+              Result:
+                $ref: '#/components/schemas/count_object'
+
+    count_array_response:
+      description: Response providing a count array
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Info:
+                $ref: '#/components/schemas/info_object'
+              Result:
+                $ref: '#/components/schemas/count_array'
 
 paths:
   /:
@@ -57,15 +157,46 @@ paths:
                     type: string
       responses:
         '200':
-          description: A successful call returns an analysis id.
+          description: Successful response.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  count:
-                    type: integer
-        '401':
-          description: Not authorized.
+                $ref: '#/components/responses/count_object_response'
+        default:
+          description: Error response.
           content: 
-            'application/json': {}
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+
+  /clone/count:
+    post:
+      description: Count of clones for repertoire(s)
+      operationId: clone_count
+      tags:
+        - clones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                token: 
+                  type: string
+                repertoires:
+                  nullable: true
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/count_object_response'
+        default:
+          description: Error response.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
