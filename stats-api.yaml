@@ -1,7 +1,7 @@
 openapi: '3.0'
 info:
   title: iReceptorPlus Statistics API
-  version: 0.2.0
+  version: 0.3.0
   description: >
     Statistics API for the iReceptor Plus platform.
   contact:
@@ -169,6 +169,101 @@ paths:
               schema:
                 $ref: '#/components/schemas/error_response'
 
+  /rearrangement/junction_length:
+    post:
+      description: >
+        Perform a junction length distribution analysis for the rearrangements that belong to the specified repertoire (and/or sample_processing and data processing entity).
+      operationId: rearrangement_junction_length
+      tags:
+        - rearrangements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                token: 
+                  type: string
+                repertoire_id:
+                  type: string
+                sample_processing_id:
+                  type: string
+                  nullable: true
+                data_processing_id:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/count_array_response'
+        default:
+          description: Error response.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+
+  /rearrangement/gene_usage:
+    post:
+      description: >
+        Perform a gene usage analysis for the rearrangementes that belong to the specified repertoire (and/or sample_processing and data_processing entity).
+      operationId: rearrangement_gene_usage
+      tags:
+        - rearrangements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                token: 
+                  type: string
+                repertoire_id:
+                  type: string
+                sample_processing_id:
+                  type: string
+                  nullable: true
+                data_processing_id:
+                  type: string
+                  nullable: true
+                fields:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - v_subgroup
+                      - v_gene
+                      - v_call
+                      - d_subgroup
+                      - d_gene
+                      - d_call
+                      - j_subgroup
+                      - j_gene
+                      - j_call
+                      - c_subgroup
+                      - c_gene
+                      - c_call
+                  description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
+                  example:
+                    - v_subgroup
+                    - v_gene
+                    - d_call
+                    - c_call
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/count_object_response'
+        default:
+          description: Error response.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+
   /clone/count:
     post:
       description: Count of clones for repertoire(s)
@@ -187,6 +282,101 @@ paths:
                   type: array
                   items:
                     type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/count_object_response'
+        default:
+          description: Error response.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+
+  /clone/junction_length:
+    post:
+      description: >
+        Perform a junction length distribution analysis for the clones that belong to the specified repertoire (and/or sample_processing and data processing entity).
+      operationId: clone_junction_length
+      tags:
+        - clones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                token: 
+                  type: string
+                repertoire_id:
+                  type: string
+                sample_processing_id:
+                  type: string
+                  nullable: true
+                data_processing_id:
+                  type: string
+                  nullable: true
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/count_array_response'
+        default:
+          description: Error response.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+
+  /clone/gene_usage:
+    post:
+      description: >
+        Perform a gene usage analysis for the clones that belong to the specified repertoire (and/or sample_processing and data_processing entity).
+      operationId: clone_gene_usage
+      tags:
+        - clones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                token: 
+                  type: string
+                repertoire_id:
+                  type: string
+                sample_processing_id:
+                  type: string
+                  nullable: true
+                data_processing_id:
+                  type: string
+                  nullable: true
+                fields:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - v_subgroup
+                      - v_gene
+                      - v_call
+                      - d_subgroup
+                      - d_gene
+                      - d_call
+                      - j_subgroup
+                      - j_gene
+                      - j_call
+                      - c_subgroup
+                      - c_gene
+                      - c_call
+                  description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
+                  example:
+                    - v_subgroup
+                    - v_gene
+                    - d_call
+                    - c_call
       responses:
         '200':
           description: Successful response.
