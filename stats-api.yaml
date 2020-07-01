@@ -279,17 +279,9 @@ paths:
                   $ref: '#/components/schemas/repertoire_description_array'
       responses:
         '200':
-          description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/count_array_response'
+          $ref: '#/components/responses/count_array_response'
         default:
-          description: Error response.
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/responses/error_response'
+          $ref: '#/components/responses/error_response'
 
   /rearrangement/gene_usage:
     post:
