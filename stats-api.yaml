@@ -177,6 +177,26 @@ components:
               Result:
                 $ref: '#/components/schemas/count_array'
 
+    junction_length_response:
+      description: Response from a /junction_length query
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Info:
+                $ref: '#/components/schemas/info_object'
+              Result:
+                type: array
+                description: Array of junction_length stats objects, one per repertoire
+                items:
+                  type: object
+                  properties:
+                    repertoire:
+                      $ref: '#/components/schemas/repertoire_description_object'
+                    data:
+                      $ref: '#/components/schemas/count_array'
+
     gene_usage_response:
       description: Response from a /gene_usage query
       content:
@@ -271,7 +291,7 @@ paths:
                   $ref: '#/components/schemas/repertoire_description_array'
       responses:
         '200':
-          $ref: '#/components/responses/count_array_response'
+          $ref: '#/components/responses/junction_length_response'
         default:
           $ref: '#/components/responses/error_response'
 
@@ -341,14 +361,14 @@ paths:
                   $ref: '#/components/schemas/repertoire_description_array'
       responses:
         '200':
-          $ref: '#/components/responses/count_array_response'
+          $ref: '#/components/responses/junction_length_response'
         default:
           $ref: '#/components/responses/error_response'
 
   /clone/gene_usage:
     post:
       description: >
-        Perform a gene usage analysis for the clones that belong to the specified repertoire (and/or sample_processing and data_processing entity).
+        Perform a gene usage analysis for the clones that belong to the specified repertoires (and/or sample_processing and data_processing entity).
       operationId: clone_gene_usage
       tags:
         - clones
