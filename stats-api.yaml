@@ -313,11 +313,7 @@ paths:
         '200':
           $ref: '#/components/responses/gene_usage_response'
         default:
-          description: Error response.
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/responses/error_response'
+          $ref: '#/components/responses/error_response'
 
   /clone/count:
     post:
