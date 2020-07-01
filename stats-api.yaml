@@ -167,7 +167,7 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/error_response'
+                $ref: '#/components/responses/error_response'
 
   /rearrangement/junction_length:
     post:
@@ -203,7 +203,7 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/error_response'
+                $ref: '#/components/responses/error_response'
 
   /rearrangement/gene_usage:
     post:
@@ -262,7 +262,7 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/error_response'
+                $ref: '#/components/responses/error_response'
 
   /clone/count:
     post:
@@ -294,7 +294,7 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/error_response'
+                $ref: '#/components/responses/error_response'
 
   /clone/junction_length:
     post:
@@ -330,7 +330,7 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/error_response'
+                $ref: '#/components/responses/error_response'
 
   /clone/gene_usage:
     post:
@@ -389,4 +389,4 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/error_response'
+                $ref: '#/components/responses/error_response'
