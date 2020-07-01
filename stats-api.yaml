@@ -115,6 +115,30 @@ components:
       items:
         $ref: '#/components/schemas/repertoire_description_object'
 
+    gene_fields_array:
+      type: array
+      description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
+      items:
+        type: string
+        enum:
+          - v_subgroup
+          - v_gene
+          - v_call
+          - d_subgroup
+          - d_gene
+          - d_call
+          - j_subgroup
+          - j_gene
+          - j_call
+          - c_subgroup
+          - c_gene
+          - c_call
+      example:
+        - v_subgroup
+        - v_gene
+        - d_call
+        - c_call
+
   responses:
     error_response:
       description: General error response.
@@ -248,28 +272,7 @@ paths:
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
                 fields:
-                  type: array
-                  items:
-                    type: string
-                    enum:
-                      - v_subgroup
-                      - v_gene
-                      - v_call
-                      - d_subgroup
-                      - d_gene
-                      - d_call
-                      - j_subgroup
-                      - j_gene
-                      - j_call
-                      - c_subgroup
-                      - c_gene
-                      - c_call
-                  description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
-                  example:
-                    - v_subgroup
-                    - v_gene
-                    - d_call
-                    - c_call
+                  $ref: '#/components/schemas/gene_fields_array'
       responses:
         '200':
           description: Successful response.
@@ -363,28 +366,7 @@ paths:
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
                 fields:
-                  type: array
-                  items:
-                    type: string
-                    enum:
-                      - v_subgroup
-                      - v_gene
-                      - v_call
-                      - d_subgroup
-                      - d_gene
-                      - d_call
-                      - j_subgroup
-                      - j_gene
-                      - j_call
-                      - c_subgroup
-                      - c_gene
-                      - c_call
-                  description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
-                  example:
-                    - v_subgroup
-                    - v_gene
-                    - d_call
-                    - c_call
+                  $ref: '#/components/schemas/gene_fields_array'
       responses:
         '200':
           description: Successful response.
