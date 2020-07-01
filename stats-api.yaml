@@ -311,11 +311,7 @@ paths:
                   $ref: '#/components/schemas/gene_fields_array'
       responses:
         '200':
-          description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/gene_usage_response'
+          $ref: '#/components/responses/gene_usage_response'
         default:
           description: Error response.
           content: 
