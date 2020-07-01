@@ -319,17 +319,9 @@ paths:
                     type: string
       responses:
         '200':
-          description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/count_object_response'
+          $ref: '#/components/responses/count_object_response'
         default:
-          description: Error response.
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/responses/error_response'
+          $ref: '#/components/responses/error_response'
 
   /clone/junction_length:
     post:
@@ -349,17 +341,9 @@ paths:
                   $ref: '#/components/schemas/repertoire_description_array'
       responses:
         '200':
-          description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/count_array_response'
+          $ref: '#/components/responses/count_array_response'
         default:
-          description: Error response.
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/responses/error_response'
+          $ref: '#/components/responses/error_response'
 
   /clone/gene_usage:
     post:
@@ -381,14 +365,6 @@ paths:
                   $ref: '#/components/schemas/gene_fields_array'
       responses:
         '200':
-          description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/responses/count_object_response'
+          $ref: '#/components/responses/gene_usage_response'
         default:
-          description: Error response.
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/responses/error_response'
+          $ref: '#/components/responses/error_response'
