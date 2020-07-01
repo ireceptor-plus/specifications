@@ -177,6 +177,42 @@ components:
               Result:
                 $ref: '#/components/schemas/count_array'
 
+    gene_usage_response:
+      description: Response from a /gene_usage query
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Info:
+                $ref: '#/components/schemas/info_object'
+              Result:
+                type: array
+                description: Array of gene stats objects, one per repertoire
+                items:
+                  type: object
+                  properties:
+                    repertoire:
+                      $ref: '#/components/schemas/repertoire_description_object'
+                    total:
+                      type: integer
+                      description: Total number of elements found in the repertoire.
+                      example: 30
+                    fields:
+                      type: array
+                      description: Array of fields the stats were performed on in the repertoire.
+                      items:
+                        type: object
+                        properties:
+                          field:
+                            type: string
+                            description: >
+                                The field that the statistics data refers to. This should be an AIRR compliant field
+                                that exists in the repository.
+                            example: v_gene
+                          data:
+                            $ref: '#/components/schemas/count_array'
+
 paths:
   /:
     get:
@@ -279,7 +315,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/responses/count_object_response'
+                $ref: '#/components/responses/gene_usage_response'
         default:
           description: Error response.
           content: 
