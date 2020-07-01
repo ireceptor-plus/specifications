@@ -83,6 +83,38 @@ components:
           count:
             type: integer
 
+    repertoire_description_object:
+      type: object
+      properties:
+        repertoire_id:
+          type: string
+          description: The reperotire on which to perform the statisitical analysis
+          example: REPID_4598
+        sample_processing_id:
+          type: string
+          description: >
+            The sample_processing_id on which to perform the analysis
+            If this is not provided then it all sample processing entities within
+            the repertoire are used to produce the requested statistical analysis.
+          example: SPID_1
+          nullable: true
+        data_processing_id:
+          type: string
+          description: >
+            The data processing ID on which to perform the analysis.
+            If this is not provided and there is more than one data processing entity attached to 
+            the repertoire then the primary_annotation is used if one exists. If there is more than
+            one data processing entity and there is no primary annotation, then all data processing
+            entities within the repertoire are used to produce the requested statistical analysis.
+          example: DPID_1
+          nullable: true
+
+    repertoire_description_array:
+      type: array
+      description: Array of repertoires on which to perform a set of statisical analyses.
+      items:
+        $ref: '#/components/schemas/repertoire_description_object'
+
   responses:
     error_response:
       description: General error response.
@@ -183,14 +215,8 @@ paths:
               properties:
                 token: 
                   type: string
-                repertoire_id:
-                  type: string
-                sample_processing_id:
-                  type: string
-                  nullable: true
-                data_processing_id:
-                  type: string
-                  nullable: true
+                repertoires:
+                  $ref: '#/components/schemas/repertoire_description_array'
       responses:
         '200':
           description: Successful response.
@@ -219,14 +245,8 @@ paths:
               properties:
                 token: 
                   type: string
-                repertoire_id:
-                  type: string
-                sample_processing_id:
-                  type: string
-                  nullable: true
-                data_processing_id:
-                  type: string
-                  nullable: true
+                repertoires:
+                  $ref: '#/components/schemas/repertoire_description_array'
                 fields:
                   type: array
                   items:
@@ -310,14 +330,8 @@ paths:
               properties:
                 token: 
                   type: string
-                repertoire_id:
-                  type: string
-                sample_processing_id:
-                  type: string
-                  nullable: true
-                data_processing_id:
-                  type: string
-                  nullable: true
+                repertoires:
+                  $ref: '#/components/schemas/repertoire_description_array'
       responses:
         '200':
           description: Successful response.
@@ -346,14 +360,8 @@ paths:
               properties:
                 token: 
                   type: string
-                repertoire_id:
-                  type: string
-                sample_processing_id:
-                  type: string
-                  nullable: true
-                data_processing_id:
-                  type: string
-                  nullable: true
+                repertoires:
+                  $ref: '#/components/schemas/repertoire_description_array'
                 fields:
                   type: array
                   items:
