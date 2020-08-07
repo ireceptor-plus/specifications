@@ -71,6 +71,7 @@ components:
           type: object
           additionalProperties:
             type: integer
+            example: 42
 
     count_array:
       type: array
@@ -79,6 +80,7 @@ components:
         type: object
         additionalProperties:
           type: integer
+          example: 42
 
     repertoire_description_object:
       type: object
