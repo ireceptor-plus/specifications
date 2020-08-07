@@ -165,8 +165,8 @@ components:
               Result:
                 $ref: '#/components/schemas/count_object'
 
-    count_array_response:
-      description: Response providing a count array
+    count_response:
+      description: Response from a /count query
       content:
         application/json:
           schema:
@@ -175,7 +175,17 @@ components:
               Info:
                 $ref: '#/components/schemas/info_object'
               Result:
-                $ref: '#/components/schemas/count_array'
+                type: array
+                description: Array of count objects, one per repertoire
+                items:
+                  type: object
+                  properties:
+                    repertoire:
+                      $ref: '#/components/schemas/repertoire_description_object'
+                    count:
+                      type: integer
+                      description: Number of objects found for thie repertoire
+                      example: 42
 
     junction_length_response:
       description: Response from a /junction_length query
@@ -263,13 +273,11 @@ paths:
                 token: 
                   type: string
                 repertoires:
-                  nullable: true
-                  type: array
-                  items:
-                    type: string
+                  $ref: '#/components/schemas/repertoire_description_array'
+
       responses:
         '200':
-          $ref: '#/components/responses/count_object_response'
+          $ref: '#/components/responses/count_response'
         default:
           $ref: '#/components/responses/error_response'
 
