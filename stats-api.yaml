@@ -224,10 +224,6 @@ components:
                   properties:
                     repertoire:
                       $ref: '#/components/schemas/repertoire_description_object'
-                    total:
-                      type: integer
-                      description: Total number of elements found in the repertoire.
-                      example: 30
                     fields:
                       type: array
                       description: Array of fields the stats were performed on in the repertoire.
@@ -240,6 +236,10 @@ components:
                                 The field that the statistics data refers to. This should be an AIRR compliant field
                                 that exists in the repository.
                             example: v_gene
+                          total:
+                            type: integer
+                            description: Total number of elements found in the repertoire.
+                            example: 30
                           data:
                             $ref: '#/components/schemas/count_array'
 
