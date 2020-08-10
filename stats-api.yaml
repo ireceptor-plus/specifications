@@ -345,13 +345,10 @@ paths:
                 token: 
                   type: string
                 repertoires:
-                  nullable: true
-                  type: array
-                  items:
-                    type: string
+                  $ref: '#/components/schemas/repertoire_description_array' 
       responses:
         '200':
-          $ref: '#/components/responses/count_object_response'
+          $ref: '#/components/responses/count_response'
         default:
           $ref: '#/components/responses/error_response'
 
