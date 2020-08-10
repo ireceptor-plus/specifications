@@ -84,11 +84,14 @@ components:
 
     repertoire_description_object:
       type: object
+      required:
+        - repertoire_id
       properties:
         repertoire_id:
           type: string
           description: The reperotire on which to perform the statisitical analysis
           example: REPID_4598
+          nullable: false
         sample_processing_id:
           type: string
           description: >
