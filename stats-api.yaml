@@ -78,9 +78,11 @@ components:
       description: Array-based count representation
       items: 
         type: object
-        additionalProperties:
-          type: integer
-          example: 42
+        properties:
+          key:
+            type: integer
+          count:
+            type: integer
 
     repertoire_description_object:
       type: object
