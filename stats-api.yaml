@@ -274,7 +274,7 @@ paths:
           application/json:
             schema:
               properties:
-                token: 
+                auth_token: 
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
@@ -297,7 +297,7 @@ paths:
           application/json:
             schema:
               properties:
-                token: 
+                auth_token: 
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
@@ -319,7 +319,7 @@ paths:
           application/json:
             schema:
               properties:
-                token: 
+                auth_token: 
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
@@ -342,7 +342,7 @@ paths:
           application/json:
             schema:
               properties:
-                token: 
+                auth_token: 
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array' 
@@ -364,7 +364,7 @@ paths:
           application/json:
             schema:
               properties:
-                token: 
+                auth_token: 
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
@@ -386,7 +386,7 @@ paths:
           application/json:
             schema:
               properties:
-                token: 
+                auth_token: 
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
