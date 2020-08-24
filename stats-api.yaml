@@ -119,6 +119,28 @@ components:
       items:
         $ref: '#/components/schemas/repertoire_description_object'
 
+    count_fields_array:
+      type: array
+      description: The field to count on for this repertoire
+      items:
+        type: string
+        enum:
+          - repertoire_id
+      example:
+        - repertoire_id
+
+    junction_fields_array:
+      type: array
+      description: The types of junction length stats requested (one of amino acid or nucleotide length)
+      items:
+        type: string
+        enum:
+          - junction_aa_length
+          - junction_length
+      example:
+        - junction_aa_length
+        - junction_length
+
     gene_fields_array:
       type: array
       description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
@@ -140,8 +162,36 @@ components:
       example:
         - v_subgroup
         - v_gene
+        - v_call
+        - d_subgroup
+        - d_gene
         - d_call
+        - j_subgroup
+        - j_gene
+        - j_call
+        - c_subgroup
+        - c_gene
         - c_call
+  
+    field_response_array:
+      type: array
+      description: Array of fields the stats were performed on in the repertoire.
+      items:
+        type: object
+        properties:
+          field:
+            type: string
+            description: >
+              The field that the statistics data refers to. This should be an AIRR compliant field
+              that exists in the repository.
+            example: field_name
+          total:
+            type: integer
+            description: Total number of elements found in the repertoire.
+            example: 30
+          data:
+            $ref: '#/components/schemas/count_array'
+
 
   responses:
     error_response:
@@ -169,6 +219,7 @@ components:
               Result:
                 $ref: '#/components/schemas/count_object'
 
+
     count_response:
       description: Response from a /count query
       content:
@@ -186,10 +237,8 @@ components:
                   properties:
                     repertoire:
                       $ref: '#/components/schemas/repertoire_description_object'
-                    count:
-                      type: integer
-                      description: Number of objects found for thie repertoire
-                      example: 42
+                    fields:
+                      $ref: '#/components/schemas/field_response_array'
 
     junction_length_response:
       description: Response from a /junction_length query
@@ -208,8 +257,8 @@ components:
                   properties:
                     repertoire:
                       $ref: '#/components/schemas/repertoire_description_object'
-                    data:
-                      $ref: '#/components/schemas/count_array'
+                    fields:
+                      $ref: '#/components/schemas/field_response_array'
 
     gene_usage_response:
       description: Response from a /gene_usage query
@@ -229,23 +278,7 @@ components:
                     repertoire:
                       $ref: '#/components/schemas/repertoire_description_object'
                     fields:
-                      type: array
-                      description: Array of fields the stats were performed on in the repertoire.
-                      items:
-                        type: object
-                        properties:
-                          field:
-                            type: string
-                            description: >
-                                The field that the statistics data refers to. This should be an AIRR compliant field
-                                that exists in the repository.
-                            example: v_gene
-                          total:
-                            type: integer
-                            description: Total number of elements found in the repertoire.
-                            example: 30
-                          data:
-                            $ref: '#/components/schemas/count_array'
+                      $ref: '#/components/schemas/field_response_array'
 
 paths:
   /:
@@ -278,6 +311,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
+                fields:
+                  $ref: '#/components/schemas/count_fields_array'
 
       responses:
         '200':
@@ -301,6 +336,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
+                fields:
+                  $ref: '#/components/schemas/junction_fields_array'
       responses:
         '200':
           $ref: '#/components/responses/junction_length_response'
@@ -346,6 +383,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array' 
+                fields:
+                  $ref: '#/components/schemas/count_fields_array'
       responses:
         '200':
           $ref: '#/components/responses/count_response'
@@ -368,6 +407,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
+                fields:
+                  $ref: '#/components/schemas/junction_fields_array'
       responses:
         '200':
           $ref: '#/components/responses/junction_length_response'
