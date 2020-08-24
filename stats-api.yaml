@@ -61,18 +61,6 @@ components:
                 email:
                   type: string
 
-    count_object:
-      type: object
-      description: Key-value pair count representation with total count
-      properties:
-        total_count:
-          type: integer
-        counts:
-          type: object
-          additionalProperties:
-            type: integer
-            example: 42
-
     count_array:
       type: array
       description: Array-based count representation
@@ -206,19 +194,6 @@ components:
               Message:
                 type: string
                 description: Detail about the error
-
-    count_object_response:
-      description: Response providing a count object
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              Info:
-                $ref: '#/components/schemas/info_object'
-              Result:
-                $ref: '#/components/schemas/count_object'
-
 
     count_response:
       description: Response from a /count query
