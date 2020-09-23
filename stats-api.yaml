@@ -129,9 +129,13 @@ components:
         enum:
           - junction_aa_length
           - junction_length
+          - junction_aa_length_productive
+          - junction_length_productive
       example:
         - junction_aa_length
         - junction_length
+        - junction_aa_length_productive
+        - junction_length_productive
 
     gene_fields_array:
       type: array
@@ -151,6 +155,18 @@ components:
           - c_subgroup
           - c_gene
           - c_call
+          - v_subgroup_productive
+          - v_gene_productive
+          - v_call_productive
+          - d_subgroup_productive
+          - d_gene_productive
+          - d_call_productive
+          - j_subgroup_productive
+          - j_gene_productive
+          - j_call_productive
+          - c_subgroup_productive
+          - c_gene_productive
+          - c_call_productive
       example:
         - v_subgroup
         - v_gene
