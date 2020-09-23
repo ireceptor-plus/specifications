@@ -110,8 +110,6 @@ components:
         properties:
           repertoire:
             $ref: '#/components/schemas/repertoire_description_object'
-          productive:
-            type: boolean
 
     count_fields_array:
       type: array
