@@ -89,7 +89,7 @@ components:
             If this is not provided then it all sample processing entities within
             the repertoire are used to produce the requested statistical analysis.
           example: SPID_1
-          nullable: true
+          nullable: false
         data_processing_id:
           type: string
           description: >
@@ -99,7 +99,7 @@ components:
             one data processing entity and there is no primary annotation, then all data processing
             entities within the repertoire are used to produce the requested statistical analysis.
           example: DPID_1
-          nullable: true
+          nullable: false
 
     repertoire_description_array:
       type: array
