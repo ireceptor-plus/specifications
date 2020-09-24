@@ -68,9 +68,11 @@ components:
         type: object
         properties:
           key:
-            type: integer
+            type: string
+            example: key
           count:
             type: integer
+            example: 10
 
     repertoire_description_object:
       type: object
@@ -107,17 +109,19 @@ components:
       items:
         $ref: '#/components/schemas/repertoire_description_object'
 
-    count_fields_array:
+    count_statistics_array:
       type: array
       description: The field to count on for this repertoire
       items:
         type: string
         enum:
-          - repertoire_id
+          - rearrangement_count
+          - duplicate_count
       example:
-        - repertoire_id
+        - rearrangement_count
+        - duplicate_count
 
-    junction_fields_array:
+    junction_statistics_array:
       type: array
       description: The types of junction length stats requested (one of amino acid or nucleotide length)
       items:
@@ -129,7 +133,7 @@ components:
         - junction_aa_length
         - junction_length
 
-    gene_fields_array:
+    gene_statistics_array:
       type: array
       description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
       items:
@@ -161,18 +165,17 @@ components:
         - c_gene
         - c_call
   
-    field_response_array:
+    statistic_response_array:
       type: array
-      description: Array of fields the stats were performed on in the repertoire.
+      description: Array of statistics that were requested.
       items:
         type: object
         properties:
-          field:
+          statistic_name:
             type: string
             description: >
-              The field that the statistics data refers to. This should be an AIRR compliant field
-              that exists in the repository.
-            example: field_name
+              The statistic name that the statistics data refers to. This is a controlled vocabulary string that is defined in the statistic call.
+            example: statistic_name
           total:
             type: integer
             description: Total number of elements found in the repertoire.
@@ -180,6 +183,21 @@ components:
           data:
             $ref: '#/components/schemas/count_array'
 
+    stats_response_object:
+      type: object
+      properties:
+        Info:
+          $ref: '#/components/schemas/info_object'
+        Result:
+          type: array
+          description: Array of count objects, one per repertoire
+          items:
+            type: object
+            properties:
+              repertoire:
+                $ref: '#/components/schemas/repertoire_description_object'
+              statistics:
+                $ref: '#/components/schemas/statistic_response_array'
 
   responses:
     error_response:
@@ -200,60 +218,21 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              Info:
-                $ref: '#/components/schemas/info_object'
-              Result:
-                type: array
-                description: Array of count objects, one per repertoire
-                items:
-                  type: object
-                  properties:
-                    repertoire:
-                      $ref: '#/components/schemas/repertoire_description_object'
-                    fields:
-                      $ref: '#/components/schemas/field_response_array'
+            $ref: '#/components/schemas/stats_response_object'
 
     junction_length_response:
       description: Response from a /junction_length query
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              Info:
-                $ref: '#/components/schemas/info_object'
-              Result:
-                type: array
-                description: Array of junction_length stats objects, one per repertoire
-                items:
-                  type: object
-                  properties:
-                    repertoire:
-                      $ref: '#/components/schemas/repertoire_description_object'
-                    fields:
-                      $ref: '#/components/schemas/field_response_array'
+            $ref: '#/components/schemas/stats_response_object'
 
     gene_usage_response:
       description: Response from a /gene_usage query
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              Info:
-                $ref: '#/components/schemas/info_object'
-              Result:
-                type: array
-                description: Array of gene stats objects, one per repertoire
-                items:
-                  type: object
-                  properties:
-                    repertoire:
-                      $ref: '#/components/schemas/repertoire_description_object'
-                    fields:
-                      $ref: '#/components/schemas/field_response_array'
+            $ref: '#/components/schemas/stats_response_object'
 
 paths:
   /:
@@ -286,8 +265,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/count_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/count_statistics_array'
 
       responses:
         '200':
@@ -311,8 +290,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/junction_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/junction_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/junction_length_response'
@@ -335,8 +314,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/gene_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/gene_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/gene_usage_response'
@@ -358,8 +337,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array' 
-                fields:
-                  $ref: '#/components/schemas/count_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/count_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/count_response'
@@ -382,8 +361,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/junction_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/junction_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/junction_length_response'
@@ -406,8 +385,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/gene_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/gene_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/gene_usage_response'
