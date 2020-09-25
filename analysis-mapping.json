@@ -1,0 +1,26 @@
+{
+    "gene_usage": [
+        {
+            "app": "irplus-alakazam-ls5-4.1",
+            "inputs": {
+                "singularity_image": "agave://data.vdjserver.org//irplus/images/immcantation_suite-4.1.0.sif",
+                "metadata_file": "$metadata_file",
+                "rearrangement_file": "$rearrangement_file"
+            },
+            "parameters": {
+                "creator": "irplus",
+                "gene_usage_flag": true,
+                "aa_properties_flag": false
+            },
+            "executionLevels": [
+                { "inputSize": 2e8, "batchQueue": "normal", "maxRunTime": "02:00:00", "nodeCount": 1 },
+                { "inputSize": 4e8, "batchQueue": "normal", "maxRunTime": "04:00:00", "nodeCount": 1 },
+                { "inputSize": 8e8, "batchQueue": "normal", "maxRunTime": "08:00:00", "nodeCount": 4 },
+                { "inputSize": 1e9, "batchQueue": "normal", "maxRunTime": "24:00:00", "nodeCount": 8 }
+            ]
+        }
+    ],
+    
+    "define_clones": [
+    ]
+}
