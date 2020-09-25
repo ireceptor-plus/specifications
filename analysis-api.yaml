@@ -67,14 +67,14 @@ components:
       type: object
       required:
         - rearrangement_file
-        - repertoire_file
+        - metadata_file
       properties:
         rearrangement_file:
           type: string
           description: Input rearrangement AIRR TSV file
           example: agave:///irplus/data/TCR/vdjserver1.airr.tsv.gz
           nullable: false
-        repertoire_file:
+        metadata_file:
           type: string
           description: AIRR repertoire metadata file associated with the rearrangement AIRR TSV file
           example: agave:///irplus/data/TCR/vdjserver1-metadata.airr.json
