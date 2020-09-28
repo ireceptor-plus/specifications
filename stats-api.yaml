@@ -42,24 +42,6 @@ components:
               type: string
             email:
               type: string
-        api:
-          type: object
-          properties:
-            title:
-              type: string
-            version:
-              type: string
-            description:
-              type: string
-            contact: 
-              type: object
-              properties:
-                name:
-                  type: string
-                url:
-                  type: string
-                email:
-                  type: string
 
     count_array:
       type: array
@@ -74,6 +56,17 @@ components:
             type: integer
             example: 10
 
+    # Service info object. This is the object returned by the /info request,
+    # and provides information about the API service and its attributes and capabilities
+    service_info_object:
+      description: Provides information about the API service and its attributes and capabilities.
+      allOf:
+        - $ref: '#/components/schemas/info_object'
+        - type: object
+          properties:
+            api:
+              $ref: '#/components/schemas/info_object'
+              
     repertoire_description_object:
       type: object
       required:
@@ -250,6 +243,24 @@ paths:
                   result:
                     type: string
 
+  /info:
+    get:
+      description: Service information.
+      operationId: get_service_info
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/service_info_object'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/error_response'
+                
   /rearrangement/count:
     post:
       description: Count of rearrangements for repertoire(s)
