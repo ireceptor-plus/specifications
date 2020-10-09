@@ -1,7 +1,7 @@
 openapi: '3.0'
 info:
   title: iReceptorPlus Analysis API
-  version: 0.1.0
+  version: 0.2.0
   contact:
     name: iReceptor Plus
     url: 'https://www.ireceptor-plus.com'
@@ -98,6 +98,11 @@ components:
           type: string
           description: Detail about the error
 
+  securitySchemes:
+    user_authorization:
+      type: http
+      scheme: bearer
+
 paths:
   /:
     get:
@@ -136,6 +141,8 @@ paths:
     get:
       description: Return status of analysis for given identifier
       operationId: get_analysis_status
+      security:
+        - user_authorization: []
       parameters:
         - name: analysis_id
           in: path
@@ -158,6 +165,8 @@ paths:
     post:
       description: Create a define clones analysis for a rearrangement query.
       operationId: define_clones
+      security:
+        - user_authorization: []
       tags:
         - rearrangements
       requestBody:
@@ -191,6 +200,8 @@ paths:
       description: >
         Perform a gene usage analysis for a rearrangement data file.
       operationId: rearrangement_gene_usage
+      security:
+        - user_authorization: []
       tags:
         - rearrangements
       requestBody:
