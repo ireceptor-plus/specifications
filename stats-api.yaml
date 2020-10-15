@@ -121,7 +121,7 @@ components:
           - duplicate_count
           - rearrangement_count_productive
           - duplicate_count_productive
-example:
+      example:
         - rearrangement_count
         - duplicate_count
 
