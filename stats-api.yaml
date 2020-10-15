@@ -20,6 +20,11 @@ servers:
     variables:
       basePath:
         default: /irplus/v1/stats
+  - url: https://stats-staging.ireceptor.org/irplus/v1/stats
+    description: VDJServer Staging server
+    variables:
+      basePath:
+        default: /irplus/v1/stats
 
 components:
   schemas:
