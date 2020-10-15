@@ -115,7 +115,9 @@ components:
         enum:
           - rearrangement_count
           - duplicate_count
-      example:
+          - rearrangement_count_productive
+          - duplicate_count_productive
+example:
         - rearrangement_count
         - duplicate_count
 
@@ -127,6 +129,8 @@ components:
         enum:
           - junction_aa_length
           - junction_length
+          - junction_aa_length_productive
+          - junction_length_productive
       example:
         - junction_aa_length
         - junction_length
