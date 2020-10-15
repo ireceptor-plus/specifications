@@ -20,6 +20,11 @@ servers:
     variables:
       basePath:
         default: /irplus/v1/stats
+  - url: https://stats-staging.ireceptor.org/irplus/v1/stats
+    description: iReceptor Stats Staging server
+    variables:
+      basePath:
+        default: /irplus/v1/stats
 
 components:
   schemas:
@@ -42,24 +47,6 @@ components:
               type: string
             email:
               type: string
-        api:
-          type: object
-          properties:
-            title:
-              type: string
-            version:
-              type: string
-            description:
-              type: string
-            contact: 
-              type: object
-              properties:
-                name:
-                  type: string
-                url:
-                  type: string
-                email:
-                  type: string
 
     count_array:
       type: array
@@ -68,10 +55,23 @@ components:
         type: object
         properties:
           key:
-            type: integer
+            type: string
+            example: key
           count:
             type: integer
+            example: 10
 
+    # Service info object. This is the object returned by the /info request,
+    # and provides information about the API service and its attributes and capabilities
+    service_info_object:
+      description: Provides information about the API service and its attributes and capabilities.
+      allOf:
+        - $ref: '#/components/schemas/info_object'
+        - type: object
+          properties:
+            api:
+              $ref: '#/components/schemas/info_object'
+              
     repertoire_description_object:
       type: object
       required:
@@ -89,7 +89,7 @@ components:
             If this is not provided then it all sample processing entities within
             the repertoire are used to produce the requested statistical analysis.
           example: SPID_1
-          nullable: true
+          nullable: false
         data_processing_id:
           type: string
           description: >
@@ -99,7 +99,7 @@ components:
             one data processing entity and there is no primary annotation, then all data processing
             entities within the repertoire are used to produce the requested statistical analysis.
           example: DPID_1
-          nullable: true
+          nullable: false
 
     repertoire_description_array:
       type: array
@@ -111,17 +111,21 @@ components:
           repertoire:
             $ref: '#/components/schemas/repertoire_description_object'
 
-    count_fields_array:
+    count_statistics_array:
       type: array
       description: The field to count on for this repertoire
       items:
         type: string
         enum:
-          - repertoire_id
-      example:
-        - repertoire_id
+          - rearrangement_count
+          - duplicate_count
+          - rearrangement_count_productive
+          - duplicate_count_productive
+example:
+        - rearrangement_count
+        - duplicate_count
 
-    junction_fields_array:
+    junction_statistics_array:
       type: array
       description: The types of junction length stats requested (one of amino acid or nucleotide length)
       items:
@@ -137,62 +141,78 @@ components:
         - junction_aa_length_productive
         - junction_length_productive
 
-    gene_fields_array:
+    gene_statistics_array:
       type: array
       description: The types of gene usage stats requested (one of V,D, or J subgroup, gene, or allele)
       items:
         type: string
         enum:
-          - v_subgroup
-          - v_gene
-          - v_call
-          - d_subgroup
-          - d_gene
-          - d_call
-          - j_subgroup
-          - j_gene
-          - j_call
-          - c_subgroup
-          - c_gene
-          - c_call
-          - v_subgroup_productive
-          - v_gene_productive
-          - v_call_productive
-          - d_subgroup_productive
-          - d_gene_productive
-          - d_call_productive
-          - j_subgroup_productive
-          - j_gene_productive
-          - j_call_productive
-          - c_subgroup_productive
-          - c_gene_productive
-          - c_call_productive
+          - v_subgroup_unique
+          - v_gene_unique
+          - v_call_unique
+          - d_subgroup_unique
+          - d_gene_unique
+          - d_call_unique
+          - j_subgroup_unique
+          - j_gene_unique
+          - j_call_unique
+          - c_subgroup_unique
+          - c_gene_unique
+          - c_call_unique
+          - v_subgroup_exists
+          - v_gene_exists
+          - v_call_exists
+          - d_subgroup_exists
+          - d_gene_exists
+          - d_call_exists
+          - j_subgroup_exists
+          - j_gene_exists
+          - j_call_exists
+          - c_subgroup_exists
+          - c_gene_exists
+          - c_call_exists
+          - v_subgroup_unique_productive
+          - v_gene_unique_productive
+          - v_call_unique_productive
+          - d_subgroup_unique_productive
+          - d_gene_unique_productive
+          - d_call_unique_productive
+          - j_subgroup_unique_productive
+          - j_gene_unique_productive
+          - j_call_unique_productive
+          - c_subgroup_unique_productive
+          - c_gene_unique_productive
+          - c_call_unique_productive
+          - v_subgroup_exists_productive
+          - v_gene_exists_productive
+          - v_call_exists_productive
+          - d_subgroup_exists_productive
+          - d_gene_exists_productive
+          - d_call_exists_productive
+          - j_subgroup_exists_productive
+          - j_gene_exists_productive
+          - j_call_exists_productive
+          - c_subgroup_exists_productive
+          - c_gene_exists_productive
+          - c_call_exists_productive
       example:
-        - v_subgroup
-        - v_gene
-        - v_call
-        - d_subgroup
-        - d_gene
-        - d_call
-        - j_subgroup
-        - j_gene
-        - j_call
-        - c_subgroup
-        - c_gene
-        - c_call
+        - v_subgroup_unique
+        - v_gene_unique
+        - d_subgroup_unique
+        - d_gene_unique
+        - c_gene_unique
   
-    field_response_array:
+    statistic_response_array:
       type: array
-      description: Array of fields the stats were performed on in the repertoire.
+      description: Array of statistics that were requested.
       items:
         type: object
         properties:
-          field:
+          statistic_name:
             type: string
             description: >
-              The field that the statistics data refers to. This should be an AIRR compliant field
-              that exists in the repository.
-            example: field_name
+              The statistic name that the statistics data refers to. This is a controlled vocabulary string that is defined in the statistic call.
+            example: statistic_name
           total:
             type: integer
             description: Total number of elements found in the repertoire.
@@ -200,6 +220,21 @@ components:
           data:
             $ref: '#/components/schemas/count_array'
 
+    stats_response_object:
+      type: object
+      properties:
+        Info:
+          $ref: '#/components/schemas/info_object'
+        Result:
+          type: array
+          description: Array of count objects, one per repertoire
+          items:
+            type: object
+            properties:
+              repertoire:
+                $ref: '#/components/schemas/repertoire_description_object'
+              statistics:
+                $ref: '#/components/schemas/statistic_response_array'
 
   responses:
     error_response:
@@ -220,60 +255,21 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              Info:
-                $ref: '#/components/schemas/info_object'
-              Result:
-                type: array
-                description: Array of count objects, one per repertoire
-                items:
-                  type: object
-                  properties:
-                    repertoire:
-                      $ref: '#/components/schemas/repertoire_description_object'
-                    fields:
-                      $ref: '#/components/schemas/field_response_array'
+            $ref: '#/components/schemas/stats_response_object'
 
     junction_length_response:
       description: Response from a /junction_length query
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              Info:
-                $ref: '#/components/schemas/info_object'
-              Result:
-                type: array
-                description: Array of junction_length stats objects, one per repertoire
-                items:
-                  type: object
-                  properties:
-                    repertoire:
-                      $ref: '#/components/schemas/repertoire_description_object'
-                    fields:
-                      $ref: '#/components/schemas/field_response_array'
+            $ref: '#/components/schemas/stats_response_object'
 
     gene_usage_response:
       description: Response from a /gene_usage query
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              Info:
-                $ref: '#/components/schemas/info_object'
-              Result:
-                type: array
-                description: Array of gene stats objects, one per repertoire
-                items:
-                  type: object
-                  properties:
-                    repertoire:
-                      $ref: '#/components/schemas/repertoire_description_object'
-                    fields:
-                      $ref: '#/components/schemas/field_response_array'
+            $ref: '#/components/schemas/stats_response_object'
 
 paths:
   /:
@@ -291,6 +287,24 @@ paths:
                   result:
                     type: string
 
+  /info:
+    get:
+      description: Service information.
+      operationId: get_service_info
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/service_info_object'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/error_response'
+                
   /rearrangement/count:
     post:
       description: Count of rearrangements for repertoire(s)
@@ -306,8 +320,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/count_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/count_statistics_array'
 
       responses:
         '200':
@@ -331,8 +345,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/junction_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/junction_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/junction_length_response'
@@ -355,8 +369,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/gene_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/gene_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/gene_usage_response'
@@ -378,8 +392,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array' 
-                fields:
-                  $ref: '#/components/schemas/count_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/count_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/count_response'
@@ -402,8 +416,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/junction_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/junction_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/junction_length_response'
@@ -426,8 +440,8 @@ paths:
                   type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
-                fields:
-                  $ref: '#/components/schemas/gene_fields_array'
+                statistics:
+                  $ref: '#/components/schemas/gene_statistics_array'
       responses:
         '200':
           $ref: '#/components/responses/gene_usage_response'

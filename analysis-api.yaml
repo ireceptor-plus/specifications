@@ -1,7 +1,7 @@
 openapi: '3.0'
 info:
   title: iReceptorPlus Analysis API
-  version: 0.1.0
+  version: 0.2.0
   contact:
     name: iReceptor Plus
     url: 'https://www.ireceptor-plus.com'
@@ -21,6 +21,88 @@ servers:
       basePath:
         default: /irplus/v1/analysis
 
+components:
+  schemas:
+    # Info object
+    info_object:
+      type: object
+      description: Provides information about the API response
+      properties:
+        title:
+          type: string
+        version:
+          type: string
+        description:
+          type: string
+        contact:
+          type: object
+          properties:
+            name:
+              type: string
+            url:
+              type: string
+            email:
+              type: string
+        license:
+          type: object
+          properties:
+            name:
+              type: string
+            url:
+              type: string
+
+    # Service info object. This is the object returned by the /info request,
+    # and provides information about the API service and its attributes and capabilities
+    service_info_object:
+      description: Provides information about the API service and its attributes and capabilities.
+      allOf:
+        - $ref: '#/components/schemas/info_object'
+        - type: object
+          properties:
+            api:
+              $ref: '#/components/schemas/info_object'
+
+    rearrangement_dataset_object:
+      description: Input rearrangement dataset for an analysis.
+      type: object
+      required:
+        - rearrangement_file
+        - metadata_file
+      properties:
+        rearrangement_file:
+          type: string
+          description: Input rearrangement AIRR TSV file
+          example: agave:///irplus/data/TCR/vdjserver1.airr.tsv.gz
+          nullable: false
+        metadata_file:
+          type: string
+          description: AIRR repertoire metadata file associated with the rearrangement AIRR TSV file
+          example: agave:///irplus/data/TCR/vdjserver1-metadata.airr.json
+          nullable: false
+
+    analysis_id_response:
+      type: object
+      properties:
+        analysis_id:
+          type: string
+          description: Unique identifier for the analysis job
+        message:
+          type: string
+          description: Detail about the error
+
+    # error response
+    error_response:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Detail about the error
+
+  securitySchemes:
+    user_authorization:
+      type: http
+      scheme: bearer
+
 paths:
   /:
     get:
@@ -37,10 +119,37 @@ paths:
                   result:
                     type: string
 
+  /info:
+    get:
+      description: Service information.
+      operationId: get_service_info
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/service_info_object'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+
   /status/{analysis_id}:
     get:
       description: Return status of analysis for given identifier
       operationId: get_analysis_status
+      security:
+        - user_authorization: []
+      parameters:
+        - name: analysis_id
+          in: path
+          description: analysis identifer
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Analysis status
@@ -51,18 +160,13 @@ paths:
                 properties:
                   result:
                     type: string
-      parameters:
-        - name: analysis_id
-          in: path
-          description: analysis identifer
-          required: true
-          schema:
-            type: string
 
   /rearrangement/define_clones:
     post:
       description: Create a define clones analysis for a rearrangement query.
       operationId: define_clones
+      security:
+        - user_authorization: []
       tags:
         - rearrangements
       requestBody:
@@ -83,11 +187,38 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  analysis_id:
-                    type: string
-        '401':
-          description: Not authorized.
-          content: 
-            'application/json': {}
+                $ref: '#/components/schemas/analysis_id_response'
+        default:
+          description: Request error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
+
+  /rearrangement/gene_usage:
+    post:
+      description: >
+        Perform a gene usage analysis for a rearrangement data file.
+      operationId: rearrangement_gene_usage
+      security:
+        - user_authorization: []
+      tags:
+        - rearrangements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/rearrangement_dataset_object'
+      responses:
+        '200':
+          description: A successful call returns an analysis id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/analysis_id_response'
+        default:
+          description: Request error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error_response'
