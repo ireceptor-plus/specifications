@@ -105,7 +105,11 @@ components:
       type: array
       description: Array of repertoires on which to perform a set of statisical analyses.
       items:
-        $ref: '#/components/schemas/repertoire_description_object'
+        type: object
+        description: Repertoire filtering parameters
+        properties:
+          repertoire:
+            $ref: '#/components/schemas/repertoire_description_object'
 
     count_statistics_array:
       type: array
@@ -134,6 +138,8 @@ example:
       example:
         - junction_aa_length
         - junction_length
+        - junction_aa_length_productive
+        - junction_length_productive
 
     gene_statistics_array:
       type: array
