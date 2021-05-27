@@ -10,18 +10,13 @@ info:
     email: info@ireceptor-plus.com
 
 servers:
-  - url: https://vdjserver.org/irplus/v1/stats
-    description: VDJServer Production server
+  - url: http://covid19-1.ireceptor.org/irplus/v1/stats
+    description: iReceptor COVID-19 repository (COVID19-1)
     variables:
       basePath:
         default: /irplus/v1/stats
-  - url: https://vdj-staging.tacc.utexas.edu/irplus/v1/stats
-    description: VDJServer Staging server
-    variables:
-      basePath:
-        default: /irplus/v1/stats
-  - url: https://stats-staging.ireceptor.org/irplus/v1/stats
-    description: iReceptor Stats Staging server
+  - url: https://ipa1.ireceptor.org/irplus/v1/stats
+    description: iReceptor Public Archive (IPA1)
     variables:
       basePath:
         default: /irplus/v1/stats
