@@ -106,6 +106,27 @@ components:
           repertoire:
             $ref: '#/components/schemas/repertoire_description_object'
 
+    subject_description_object:
+      type: object
+      required:
+        - subject_id
+      properties:
+        subject_id:
+          type: string
+          description: The subject_id on which to perform the statisitical analysis
+          example: SUB_4598
+          nullable: false
+
+    subject_description_array:
+      type: array
+      description: Array of subjects on which to perform a set of statisical analyses.
+      items:
+        type: object
+        description: Subject filtering parameters
+        properties:
+          subject:
+            $ref: '#/components/schemas/subject_description_object'
+
     count_statistics_array:
       type: array
       description: The field to count on for this repertoire
@@ -197,6 +218,15 @@ components:
         - d_gene_unique
         - c_gene_unique
   
+    mutation_statistics_array:
+      type: array
+      description: The types of mutations stats requested
+      items:
+        type: string
+        enum:
+          - total
+          - unique
+
     statistic_response_array:
       type: array
       description: Array of statistics that were requested.
@@ -261,6 +291,13 @@ components:
 
     gene_usage_response:
       description: Response from a /gene_usage query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/stats_response_object'
+
+    mutation_response:
+      description: Response from a /mutations query
       content:
         application/json:
           schema:
@@ -436,5 +473,29 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/gene_usage_response'
+        default:
+          $ref: '#/components/responses/error_response'
+          
+  /clone/mutations:
+    post:
+      description: >
+        Compute mutation statistics for the clones that are associated with the subject_id's given.
+      operationId: clone_mutation
+      tags:
+        - clones
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                auth_token: 
+                  type: string
+                subjects:
+                  $ref: '#/components/schemas/subject_description_array'
+                statistics:
+                  $ref: '#/components/schemas/mutation_statistics_array'
+      responses:
+        '200':
+          $ref: '#/components/responses/mutation_response'
         default:
           $ref: '#/components/responses/error_response'
