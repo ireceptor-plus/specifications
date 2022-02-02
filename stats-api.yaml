@@ -272,7 +272,7 @@ components:
           items:
             type: object
             properties:
-              repertoire:
+              subject:
                 $ref: '#/components/schemas/subject_description_object'
               statistics:
                 $ref: '#/components/schemas/statistic_response_array'
