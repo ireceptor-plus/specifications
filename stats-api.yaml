@@ -268,7 +268,7 @@ components:
           $ref: '#/components/schemas/info_object'
         Result:
           type: array
-          description: Array of count objects, one per repertoire
+          description: Array of count objects, one per subject
           items:
             type: object
             properties:
