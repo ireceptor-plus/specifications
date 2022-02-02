@@ -261,6 +261,22 @@ components:
               statistics:
                 $ref: '#/components/schemas/statistic_response_array'
 
+    subject_stats_response_object:
+      type: object
+      properties:
+        Info:
+          $ref: '#/components/schemas/info_object'
+        Result:
+          type: array
+          description: Array of count objects, one per repertoire
+          items:
+            type: object
+            properties:
+              repertoire:
+                $ref: '#/components/schemas/subject_description_object'
+              statistics:
+                $ref: '#/components/schemas/statistic_response_array'
+
   responses:
     error_response:
       description: General error response.
@@ -301,7 +317,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/stats_response_object'
+            $ref: '#/components/schemas/subject_stats_response_object'
 
 paths:
   /:
