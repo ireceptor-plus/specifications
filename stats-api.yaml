@@ -266,6 +266,14 @@ components:
           schema:
             $ref: '#/components/schemas/stats_response_object'
 
+  securitySchemes:
+    user_authorization:
+      type: http
+      scheme: bearer
+    admin_authorization:
+      type: http
+      scheme: bearer
+
 paths:
   /:
     get:
