@@ -20,6 +20,11 @@ servers:
     variables:
       basePath:
         default: /irplus/v1/stats
+  - url: https://vdj-staging.tacc.utexas.edu/irplus/v1/stats
+    description: VDJServer Staging repository
+    variables:
+      basePath:
+        default: /irplus/v1/stats
 
 components:
   schemas:
@@ -315,8 +320,6 @@ paths:
           application/json:
             schema:
               properties:
-                auth_token: 
-                  type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
                 statistics:
@@ -340,8 +343,6 @@ paths:
           application/json:
             schema:
               properties:
-                auth_token: 
-                  type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
                 statistics:
@@ -364,8 +365,6 @@ paths:
           application/json:
             schema:
               properties:
-                auth_token: 
-                  type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
                 statistics:
@@ -387,8 +386,6 @@ paths:
           application/json:
             schema:
               properties:
-                auth_token: 
-                  type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array' 
                 statistics:
@@ -411,8 +408,6 @@ paths:
           application/json:
             schema:
               properties:
-                auth_token: 
-                  type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
                 statistics:
@@ -435,8 +430,6 @@ paths:
           application/json:
             schema:
               properties:
-                auth_token: 
-                  type: string
                 repertoires:
                   $ref: '#/components/schemas/repertoire_description_array'
                 statistics:
